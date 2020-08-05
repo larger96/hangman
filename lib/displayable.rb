@@ -2,7 +2,7 @@
 
 # Displays all text for the Hangman game
 module Displayable
-  @@bodypart = ['O', '|', '~', '~', '/', '\\']
+  BODYPARTS = ['O', '|', '~', '~', '/', '\\']
   @@man = Array.new(6, ' ')
   @@used_letters = Array.new
 
@@ -25,9 +25,9 @@ module Displayable
     print "\n\sMake your choice >> "
   end
 
-  def previous_letters
+  def previous_letters(letters)
     print "\n\sPrevious guesses:"
-    puts "\s#{@@used_letters.join(" ")}"
+    puts "\s#{letters.join(' ')}"
   end
 
   def noose
