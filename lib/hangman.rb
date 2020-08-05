@@ -31,23 +31,23 @@ class Hangman
   end
 
   def make_guess
-    previous_letters(@used_letters)
+    previous_letters
     choose_letter
     guess = gets.chomp.downcase
     unless guess == 'save'
       @used_letters.push(guess)
-      if letters_match?(guess)
-        change_dashes(guess)
-      else
-        hang_man
-      end
+      letters_match?(guess)
     else
       save_game
     end
   end
 
   def letters_match?(guess)
-    @random_word.include?(guess)
+    if @random_word.include?(guess)
+      change_dashes(guess)
+    else
+      hang_man
+    end
   end
 
   def change_dashes(guess)
@@ -108,26 +108,45 @@ class Hangman
     saved_game = 'saved_games/saved_game'
     File.open(saved_game, 'w') { |file| file.puts self.serialize}
     puts "\n Game saved! Come back soon!"
+    exit
   end
 
   def load_game
     saved_game = 'saved_games/saved_game'
     data = File.read(saved_game)
-    self.unserialize(data)
+    unserialize(data)
     puts "\n Welcome back!"
+    restore_hangman
+    next_round
+  end
+
+  def restore_hangman
     i = 0
     until i == @bad_guess - 1 do
       @man[i] = BODYPARTS[i]
       i += 1
     end
-    next_round
+  end
+
+  def remove_save
+    saved_game = 'saved_games/saved_game'
+    File.delete(saved_game) if File.exists? saved_game
+    puts "\sFile deleted."
+    sleep 2
+    system 'clear'
   end
 
   def check_load
     if File.exists?('saved_games/saved_game')
       print "\sDo you want to load a saved game? (Y/N):"
       input = gets.chomp.upcase
-      load_game if input == 'Y'
+      if input == 'Y'
+        load_game
+      else
+        print "\sRemove existing save file? (Y/N):"
+        input = gets.chomp.upcase
+        remove_save if input == 'Y'
+      end
     end
   end
 end
