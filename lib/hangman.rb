@@ -106,7 +106,7 @@ class Hangman
   def save_game
     Dir.mkdir('saved_games') unless Dir.exists?('saved_games')
     saved_game = 'saved_games/saved_game'
-    File.open(saved_game, 'w') { |file| file.puts self.serialize}
+    File.open(saved_game, 'w') { |file| file.puts self.serialize }
     puts "\n Game saved! Come back soon!"
     exit
   end
@@ -122,7 +122,7 @@ class Hangman
 
   def restore_hangman
     i = 0
-    until i == @bad_guess - 1 do
+    until i == @bad_guess - 1
       @man[i] = BODYPARTS[i]
       i += 1
     end

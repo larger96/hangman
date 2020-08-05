@@ -2,6 +2,7 @@
 
 require 'json'
 
+#Allows Hangman game to be serialized
 module Serializable
   @@serializer = JSON
 
